@@ -1,6 +1,7 @@
 package;
 
-
+import introduction.CountsArray;
+import introduction.Walker;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.Lib;
@@ -10,20 +11,16 @@ class Main extends Sprite {
 	
 	private var previousTime:Int;
 	public var elapsed:Float;
-	//private var ourWalker:Walker;
-	private var randomCounts:Array<Int>;
-	
-	private var numberOfCounts:Int = 20;
+	private var biasedWalker:Walker;
+	private var randomWalker:Walker;
+	private var randomCounts:CountsArray;
 	
 	public function new () {
 		super ();
-		randomCounts = new Array<Int>();
-		for (i in 0...numberOfCounts)
-		{
-			randomCounts.push(0);
-		}
-		//ourWalker = new Walker(this.stage.stageWidth / 2, this.stage.stageHeight / 2, 200);
-		//trace(ourWalker);
+		
+		randomCounts = new CountsArray();
+		biasedWalker = new Walker(this.stage.stageWidth / 2, this.stage.stageHeight / 2, 200);
+		randomWalker = new Walker(this.stage.stageWidth / 2, this.stage.stageHeight / 2);
 		
 		previousTime = Lib.getTimer();
 		this.addEventListener(Event.ENTER_FRAME, loop);
@@ -34,7 +31,36 @@ class Main extends Sprite {
 		deltaTime();
 		update();
 		draw();
-		//trace("what is this?");
+	}
+	
+	private function update()
+	{
+		biasedWalker.biasedStep(elapsed);
+		randomWalker.step(elapsed);
+		randomCounts.uniformStep();		
+	}
+	
+	//Later we might move drawing into a class of its own.
+	private function draw():Void
+	{
+		this.graphics.clear();
+		drawArray();
+		this.graphics.beginFill(0xAB94DC, .5);
+		this.graphics.drawEllipse(biasedWalker.x, biasedWalker.y, 32, 16);
+		this.graphics.beginFill(0xF7FD73, .5);
+		this.graphics.drawCircle(randomWalker.x, randomWalker.y, 16);
+		this.graphics.endFill();
+	}
+	
+	private function drawArray():Void
+	{
+		var screenDiv = this.stage.stageWidth / randomCounts.counts.length;
+		
+		for (i in 0...randomCounts.counts.length)
+		{
+			this.graphics.beginFill(0x8FA2B6 + (randomCounts.counts[i]), 1);
+			this.graphics.drawRect(i * screenDiv, this.stage.stageHeight, screenDiv, -randomCounts.counts[i]);
+		}
 	}
 	
 	private function deltaTime():Void
@@ -43,39 +69,6 @@ class Main extends Sprite {
 		var delta = currentTime - previousTime;
 		previousTime = currentTime;
 		elapsed = delta / 1000;		
-	}
-	
-	private function update()
-	{
-		//ourWalker.step(elapsed);
-		var randomPosition:Int = Math.floor(Math.random() * numberOfCounts);
-		
-		randomCounts[randomPosition]+= 10;
-		
-		//trace(randomCounts);
-	}
-	
-	private function draw():Void
-	{
-		//trace(ourWalker);
-		//var radius:Float = (Math.random() * 32) + 32;
-		this.graphics.clear();
-		
-		
-		this.graphics.lineStyle(1, 0x000000, 1);
-		drawArray();
-		this.graphics.endFill();
-	}
-	
-	private function drawArray():Void
-	{
-		var screenDiv = this.stage.stageWidth / randomCounts.length;
-		
-		for (i in 0...randomCounts.length)
-		{
-			this.graphics.beginFill(0x8FA2B6 + (randomCounts[i]), 1);
-			this.graphics.drawRect(i * screenDiv, this.stage.stageHeight, screenDiv, -randomCounts[i]);
-		}
 	}
 	
 }
