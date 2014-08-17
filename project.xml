@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="NatureOfHaxe" package="com.example.natureofhaxe" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="NatureOfHaxe" />
+	
+	<source path="Source" />
+	
+	<haxelib name="openfl" />
+	
+	<window width="640" height="360" fps="30" resizable="false" background="#E4B761" />
+	
+	<assets path="Assets" rename="assets" exclude="openfl.svg" />
+	<icon path="Assets/openfl.svg" />
+	
+</project>
