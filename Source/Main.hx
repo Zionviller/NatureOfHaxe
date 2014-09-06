@@ -5,6 +5,7 @@ import introduction.Walker;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.Lib;
+import util.Gaussian;
 
 
 class Main extends Sprite {
@@ -35,20 +36,23 @@ class Main extends Sprite {
 	
 	private function update()
 	{
-		biasedWalker.biasedStep(elapsed);
-		randomWalker.step(elapsed);
-		randomCounts.uniformStep();		
+		//trace(Gaussian.getGaussian(0, 1));
+		//biasedWalker.biasedStep(elapsed);
+		//randomWalker.step(elapsed);
+		//randomCounts.uniformStep();		
 	}
 	
 	//Later we might move drawing into a class of its own.
 	private function draw():Void
 	{
-		this.graphics.clear();
-		drawArray();
-		this.graphics.beginFill(0xAB94DC, .5);
-		this.graphics.drawEllipse(biasedWalker.x, biasedWalker.y, 32, 16);
-		this.graphics.beginFill(0xF7FD73, .5);
-		this.graphics.drawCircle(randomWalker.x, randomWalker.y, 16);
+		//this.graphics.clear();
+		//drawArray();
+		this.graphics.beginFill(0x531F54, .10);
+		this.graphics.drawCircle(Gaussian.getGaussian(320, 75), 180, 16);
+		//this.graphics.beginFill(0xAB94DC, .5);
+		//this.graphics.drawEllipse(biasedWalker.x, biasedWalker.y, 32, 16);
+		//this.graphics.beginFill(0xF7FD73, .5);
+		//this.graphics.drawCircle(randomWalker.x, randomWalker.y, 16);
 		this.graphics.endFill();
 	}
 	
